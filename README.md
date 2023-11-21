@@ -14,15 +14,17 @@
  - הוספת ספר- POST  https://api/Books 
  - עדכון ספר- PUT   https://api/Books/1
  - עדכון סטטוס- PUT   https://api/Books/1/status
-  ## מיפוי Routes למנויים
+- מחיקת ספר- DELET  https://api/Book/1
+  ## מיפוי Routes למנוי
  - שליפת רשימת המנויים- GET https://api/Members
  - שליפת מנוי לפי מזהה- GET https://api/Members/1
  - הוספת מנוי- POST  https://api/Members 
  - עדכון מנוי- PUT   https://api/Members/1
  -  עדכון סטטוס- PUT   https://api/Members/1/status
-  ## מיפוי Routes להשאלות
+   - מחיקת מנוי- DELET  https://api/Member/1
+  ## מיפוי Routes להשאלה
  - שליפת רשימת ההשאלות- GET https://api/Borrow
  - שליפת השאלה לפי מזהה- GET https://api/Borrow/1
  - הוספת השאלה- POST  https://api/Borrow 
  - עדכון השאלה- PUT   https://api/Borrow/1
- - מחיקת השאלה- DELET  https://api/Borrow/1
+ 
