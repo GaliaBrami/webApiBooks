@@ -13,11 +13,13 @@
  - שליפת ספר לפי מזהה- GET https://api/books/1
  - הוספת ספר- POST  https://api/books 
  - עדכון ספר- PUT   https://api/books/1
+ - עדכון סטטוס- PUT   https://api/books/1/status
   ## מיפוי Routes למנויים
  - שליפת רשימת המנויים- GET https://api/members
  - שליפת מנוי לפי מזהה- GET https://api/members/1
  - הוספת מנוי- POST  https://api/members 
  - עדכון מנוי- PUT   https://api/members/1
+ -  עדכון סטטוס- PUT   https://api/members/1/status
   ## מיפוי Routes להשאלות
  - שליפת רשימת ההשאלות- GET https://api/borrow
  - שליפת השאלה לפי מזהה- GET https://api/borrow/1
