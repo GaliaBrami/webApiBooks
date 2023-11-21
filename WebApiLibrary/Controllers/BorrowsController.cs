@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApiLibrary.Entities;
+using static System.Reflection.Metadata.BlobBuilder;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApiLibrary.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class BorrowsController : ControllerBase
     {
-        static List<Borrow>borrows = new List<Borrow> { new Borrow(1,1,2,DateOnly.FromDateTime(DateTime.Now)), new Borrow(2, 2, 1, DateOnly.FromDateTime(DateTime.Now)), new Borrow(3, 3, 3, DateOnly.FromDateTime(DateTime.Now)) };
+        static int id = 1;
+        static List<Borrow>borrows = new List<Borrow> { new Borrow(id++,1,2,true), new Borrow(id++, 2, 1, true), new Borrow(id++, 3, 3, true) };
         // GET: api/<BorrowsController>
         [HttpGet]
         public IEnumerable<Borrow> Get()
@@ -19,34 +22,58 @@ namespace WebApiLibrary.Controllers
 
         // GET api/<BorrowsController>/5
         [HttpGet("{id}")]
-        public Borrow Get(int id)
+        public ActionResult Get(int id)
         {
-            return borrows.FirstOrDefault(x=>x.Id==id);
+           Borrow b= borrows.Find(x=>x.Id==id);
+            if (b == null)
+                return NotFound();
+            return Ok(b);
         }
 
         // POST api/<BorrowsController>
         [HttpPost]
         public void Post([FromBody] Borrow value)
         {
-            borrows.Add(value);
+           
+            borrows.Add(new Borrow(id++,value.MemberId,value.BookId,true));
         }
 
         // PUT api/<BorrowsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Borrow value)
+        public ActionResult Put(int id, [FromBody] Borrow value)
         {
-            Borrow b = borrows.FirstOrDefault(x=>x.Id==id);
+            Borrow b = borrows.Find(x=>x.Id==id);
+            if (b == null)
+                return NotFound();
+            borrows.Remove(b);
+
             b.MemberId=value.MemberId;
             b.BookId=value.BookId;
-            b.Date=value.Date;
+            b.Status=value.Status;
+            borrows.Add(b);
+            return Ok();
+           
+        }
+        // PUT api/<BorrowsController>/5
+        [HttpPut("{id}/status")]
+        public ActionResult PutStats(int id)
+        {
+            Borrow b = borrows.FirstOrDefault(x => x.Id == id);
+            
+            if (b == null)
+                return NotFound();
+            borrows.Remove(b);
+            b.Status = !b.Status;
+            borrows.Add(b);
+            return Ok();
+            
+
         }
 
-        // DELETE api/<BorrowsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            Borrow b=borrows.FirstOrDefault(x=>x.Id==id);
-            borrows.Remove(b);
-        }
+        //// DELETE api/<BorrowsController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
