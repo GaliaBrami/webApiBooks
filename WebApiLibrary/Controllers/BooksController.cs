@@ -10,21 +10,21 @@ namespace WebApiLibrary.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        static int id = 1;
-        static List<Book> books=new List<Book> {new Book(id++,"bla",""), new Book(id++, "blu",""), new Book(id++, "bli", "") };
-
+        //static int id = 1;
+        //static List<Book> books=new List<Book> {new Book(id++,"bla",""), new Book(id++, "blu",""), new Book(id++, "bli", "") };
+        DataContext context=new DataContext();
         // GET: api/<BooksController>
         [HttpGet]
         public IEnumerable<Book> Get()
         {
-            return books;
+            return context.Books;
         }
 
         // GET api/<BooksController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            Book b= books.FirstOrDefault(x=>x.Id==id);
+            Book b= context.Books.FirstOrDefault(x=>x.Id==id);
             if(b==null)
                 return NotFound();
             return Ok(b);
@@ -34,23 +34,23 @@ namespace WebApiLibrary.Controllers
         [HttpPost]
         public void Post([FromBody] Book b)
         {
-            books.Add(new Book(id++,b.Title,b.Author,b.Description,true));
+            context.Books.Add(new Book(b.Title,b.Author,b.Description,true));
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Book value)
         {
-            Book b=books.Find(x => x.Id == id);
+            Book b= context.Books.Find(x => x.Id == id);
             if (b == null)
                 return NotFound();
-            books.Remove(b);
+            context.Books.Remove(b);
 
             b.Status = value.Status;
             b.Author = value.Author;
             b.Title = value.Title;
             b.Description = value.Description;
-            books.Add(b);
+            context.Books.Add(b);
             return Ok();
             
         }
@@ -58,12 +58,12 @@ namespace WebApiLibrary.Controllers
         [HttpPut("{id}/status")]
         public ActionResult PutStatus(int id)
         {
-            Book b = books.Find(x => x.Id == id);
+            Book b = context.Books.Find(x => x.Id == id);
             if (b == null)
                 return NotFound();
-            books.Remove(b);
+            context.Books.Remove(b);
             b.Status = !b.Status;
-            books.Add(b);
+            context.Books.Add(b);
             return Ok();
 
         }
@@ -71,10 +71,10 @@ namespace WebApiLibrary.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            Book b = books.Find(x => x.Id == id);
+            Book b = context.Books.Find(x => x.Id == id);
             if (b == null)
                 return NotFound();
-            books.Remove(b);
+            context.Books.Remove(b);
             
             return Ok();
         }

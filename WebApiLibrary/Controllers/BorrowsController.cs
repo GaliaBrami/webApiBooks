@@ -11,20 +11,21 @@ namespace WebApiLibrary.Controllers
     [ApiController]
     public class BorrowsController : ControllerBase
     {
-        static int id = 1;
-        static List<Borrow>borrows = new List<Borrow> { new Borrow(id++,1,2,true), new Borrow(id++, 2, 1, true), new Borrow(id++, 3, 3, true) };
+        //static int id = 1;
+        //static List<Borrow>borrows = new List<Borrow> { new Borrow(id++,1,2,true), new Borrow(id++, 2, 1, true), new Borrow(id++, 3, 3, true) };
+        DataContext context = new DataContext();
         // GET: api/<BorrowsController>
         [HttpGet]
         public IEnumerable<Borrow> Get()
         {
-            return borrows;
+            return context.Borrows;
         }
 
         // GET api/<BorrowsController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-           Borrow b= borrows.Find(x=>x.Id==id);
+           Borrow b= context.Borrows.Find(x=>x.Id==id);
             if (b == null)
                 return NotFound();
             return Ok(b);
@@ -34,23 +35,23 @@ namespace WebApiLibrary.Controllers
         [HttpPost]
         public void Post([FromBody] Borrow value)
         {
-           
-            borrows.Add(new Borrow(id++,value.MemberId,value.BookId,true));
+
+            context.Borrows.Add(new Borrow(value.MemberId,value.BookId,true));
         }
 
         // PUT api/<BorrowsController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Borrow value)
         {
-            Borrow b = borrows.Find(x=>x.Id==id);
+            Borrow b = context.Borrows.Find(x=>x.Id==id);
             if (b == null)
                 return NotFound();
-            borrows.Remove(b);
+            context.Borrows.Remove(b);
 
             b.MemberId=value.MemberId;
             b.BookId=value.BookId;
             b.Status=value.Status;
-            borrows.Add(b);
+            context.Borrows.Add(b);
             return Ok();
            
         }
@@ -58,13 +59,13 @@ namespace WebApiLibrary.Controllers
         [HttpPut("{id}/status")]
         public ActionResult PutStats(int id)
         {
-            Borrow b = borrows.FirstOrDefault(x => x.Id == id);
+            Borrow b = context.Borrows.FirstOrDefault(x => x.Id == id);
             
             if (b == null)
                 return NotFound();
-            borrows.Remove(b);
+            context.Borrows.Remove(b);
             b.Status = !b.Status;
-            borrows.Add(b);
+            context.Borrows.Add(b);
             return Ok();
             
 
